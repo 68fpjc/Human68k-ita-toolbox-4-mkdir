@@ -3,19 +3,19 @@
 * Itagaki Fumihiko  9-Jul-91  Create.
 * 1.0
 * Itagaki Fumihiko 22-Aug-92  strip_excessive_slashes
-* Itagaki Fumihiko 17-Sep-92  ”ñÄ‹A‰»Amkdir -p foo/../bar/baz ‚ª‰Â”\B
-* Itagaki Fumihiko 24-Sep-92  ƒhƒ‰ƒCƒu‚ğ—\‚ßŒŸ¸‚·‚é‚Ì‚Í‚â‚ß‚½B
-*                             ‚Ç‚¤‚µ‚½‚Á‚ÄŠ®‘S‚É‚Íƒ`ƒFƒbƒN‚Å‚«‚È‚¢‚Ì‚ÅB
+* Itagaki Fumihiko 17-Sep-92  éå†å¸°åŒ–ã€mkdir -p foo/../bar/baz ãŒå¯èƒ½ã€‚
+* Itagaki Fumihiko 24-Sep-92  ãƒ‰ãƒ©ã‚¤ãƒ–ã‚’äºˆã‚æ¤œæŸ»ã™ã‚‹ã®ã¯ã‚„ã‚ãŸã€‚
+*                             ã©ã†ã—ãŸã£ã¦å®Œå…¨ã«ã¯ãƒã‚§ãƒƒã‚¯ã§ããªã„ã®ã§ã€‚
 * 1.1
-* Itagaki Fumihiko 06-Nov-92  strip_excessive_slashes‚ÌƒoƒOfix‚É”º‚¤‰ü”ÅB
+* Itagaki Fumihiko 06-Nov-92  strip_excessive_slashesã®ãƒã‚°fixã«ä¼´ã†æ”¹ç‰ˆã€‚
 * 1.2
-* Itagaki Fumihiko 10-Nov-92  -p ‚Å [?:][/] ‚ğƒXƒLƒbƒv‚·‚é
+* Itagaki Fumihiko 10-Nov-92  -p ã§ [?:][/] ã‚’ã‚¹ã‚­ãƒƒãƒ—ã™ã‚‹
 * 1.3
 * Itagaki Fumihiko 20-Jan-93  GETPDB -> lea $10(a0),a0
-* Itagaki Fumihiko 20-Jan-93  ˆø” - ‚Æ -- ‚Ìˆµ‚¢‚Ì•ÏX
+* Itagaki Fumihiko 20-Jan-93  å¼•æ•° - ã¨ -- ã®æ‰±ã„ã®å¤‰æ›´
 * 1.4
 *
-* Usage: mkdir [ -p ] [ -- ] <ƒpƒX–¼> ...
+* Usage: mkdir [ -p ] [ -- ] <ãƒ‘ã‚¹å> ...
 
 .include doscall.h
 .include error.h
@@ -38,8 +38,8 @@ start:
 		bra.s	start1
 		dc.b	'#HUPAIR',0
 start1:
-		lea	stack_bottom(pc),a7		*  A7 := ƒXƒ^ƒbƒN‚Ì’ê
-		lea	$10(a0),a0			*  A0 : PDBƒAƒhƒŒƒX
+		lea	stack_bottom(pc),a7		*  A7 := ã‚¹ã‚¿ãƒƒã‚¯ã®åº•
+		lea	$10(a0),a0			*  A0 : PDBã‚¢ãƒ‰ãƒ¬ã‚¹
 		move.l	a7,d0
 		sub.l	a0,d0
 		move.l	d0,-(a7)
@@ -47,10 +47,10 @@ start1:
 		DOS	_SETBLOCK
 		addq.l	#8,a7
 	*
-	*  ˆø”‚ğƒfƒR[ƒh‚µC‰ğß‚·‚é
+	*  å¼•æ•°ã‚’ãƒ‡ã‚³ãƒ¼ãƒ‰ã—ï¼Œè§£é‡ˆã™ã‚‹
 	*
-		lea	1(a2),a0			*  A0 := ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚Ì•¶š—ñ‚Ìæ“ªƒAƒhƒŒƒX
-		bsr	strlen				*  D0.L := ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚Ì•¶š—ñ‚Ì’·‚³
+		lea	1(a2),a0			*  A0 := ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã®æ–‡å­—åˆ—ã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹
+		bsr	strlen				*  D0.L := ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã®æ–‡å­—åˆ—ã®é•·ã•
 		addq.l	#1,d0
 		move.l	d0,-(a7)
 		DOS	_MALLOC
@@ -58,11 +58,11 @@ start1:
 		tst.l	d0
 		bmi	insufficient_memory
 
-		movea.l	d0,a1				*  A1 := ˆø”•À‚ÑŠi”[ƒGƒŠƒA‚Ìæ“ªƒAƒhƒŒƒX
-		bsr	DecodeHUPAIR			*  ˆø”‚ğƒfƒR[ƒh‚·‚é
-		movea.l	a1,a0				*  A0 : ˆø”ƒ|ƒCƒ“ƒ^
-		move.l	d0,d7				*  D7.L : ˆø”ƒJƒEƒ“ƒ^
-		sf	d5				*  D5.B : -p ƒtƒ‰ƒO
+		movea.l	d0,a1				*  A1 := å¼•æ•°ä¸¦ã³æ ¼ç´ã‚¨ãƒªã‚¢ã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹
+		bsr	DecodeHUPAIR			*  å¼•æ•°ã‚’ãƒ‡ã‚³ãƒ¼ãƒ‰ã™ã‚‹
+		movea.l	a1,a0				*  A0 : å¼•æ•°ãƒã‚¤ãƒ³ã‚¿
+		move.l	d0,d7				*  D7.L : å¼•æ•°ã‚«ã‚¦ãƒ³ã‚¿
+		sf	d5				*  D5.B : -p ãƒ•ãƒ©ã‚°
 decode_opt_loop1:
 		tst.l	d7
 		beq	decode_opt_done
@@ -96,11 +96,11 @@ decode_opt_done:
 		tst.l	d7
 		beq	too_few_args
 
-		moveq	#0,d6				*  D6.W : ƒGƒ‰[EƒR[ƒh
+		moveq	#0,d6				*  D6.W : ã‚¨ãƒ©ãƒ¼ãƒ»ã‚³ãƒ¼ãƒ‰
 loop:
 		movea.l	a0,a1
 		bsr	strfor1
-		exg	a0,a1				*  A1 : Ÿ‚Ìˆø”
+		exg	a0,a1				*  A1 : æ¬¡ã®å¼•æ•°
 		move.l	a1,-(a7)
 		bsr	strip_excessive_slashes
 		bsr	mkdir
@@ -228,19 +228,19 @@ mkdir_fail_nodir:
 		move.l	(a7)+,d0
 		bsr	werror_2
 mkdir_fail_perror:
-		bsr	perror				*  ‚±‚±‚Å D6.L ‚É 2 ‚ªƒZƒbƒg‚³‚ê‚é
+		bsr	perror				*  ã“ã“ã§ D6.L ã« 2 ãŒã‚»ãƒƒãƒˆã•ã‚Œã‚‹
 		tst.l	d0
 mkdir_return:
 		rts
 *****************************************************************
-* is_directory - –¼‘O‚ªƒfƒBƒŒƒNƒgƒŠ‚Å‚ ‚é‚©‚Ç‚¤‚©‚ğ’²‚×‚é
+* is_directory - åå‰ãŒãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã§ã‚ã‚‹ã‹ã©ã†ã‹ã‚’èª¿ã¹ã‚‹
 *
 * CALL
-*      A0     –¼‘O
+*      A0     åå‰
 *
 * RETURN
-*      D0.L   –¼‘O/*.* ‚ª’·‚·‚¬‚é‚È‚ç‚Î -1D
-*             ‚»‚¤‚Å‚È‚¯‚ê‚ÎC–¼‘O‚ªƒfƒBƒŒƒNƒgƒŠ‚È‚ç‚Î 1C‚³‚à‚È‚­‚Î 0
+*      D0.L   åå‰/*.* ãŒé•·ã™ãã‚‹ãªã‚‰ã° -1ï¼
+*             ãã†ã§ãªã‘ã‚Œã°ï¼Œåå‰ãŒãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãªã‚‰ã° 1ï¼Œã•ã‚‚ãªãã° 0
 *
 *      CCR    TST.L D0
 *****************************************************************
@@ -255,7 +255,7 @@ is_directory:
 		bsr	cat_pathname
 		bmi	is_directory_return
 
-		move.w	#MODEVAL_ALL,-(a7)		*  ‚·‚×‚Ä‚ÌƒGƒ“ƒgƒŠ‚ğŒŸõ‚·‚é
+		move.w	#MODEVAL_ALL,-(a7)		*  ã™ã¹ã¦ã®ã‚¨ãƒ³ãƒˆãƒªã‚’æ¤œç´¢ã™ã‚‹
 		move.l	a0,-(a7)
 		pea	filesbuf(pc)
 		DOS	_FILES
@@ -359,22 +359,22 @@ perror_table:
 	dc.w	-1					*  25 (-26)
 
 sys_errmsgs:
-msg_nodir:		dc.b	': ‚±‚Ì‚æ‚¤‚ÈƒfƒBƒŒƒNƒgƒŠ‚Í‚ ‚è‚Ü‚¹‚ñ',0
-msg_bad_name:		dc.b	'; –¼‘O‚ª–³Œø‚Å‚·',0
-msg_bad_drive:		dc.b	'; ƒhƒ‰ƒCƒu‚Ìw’è‚ª–³Œø‚Å‚·',0
-msg_write_disabled:	dc.b	'; ‘‚«‚İ‚ª‹–‰Â‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ',0
-msg_directory_exists:	dc.b	'; ‚·‚Å‚É‘¶İ‚µ‚Ä‚¢‚Ü‚·',0
-msg_directory_full:	dc.b	'; ƒfƒBƒŒƒNƒgƒŠ‚ª–”t‚Å‚·',0
-msg_disk_full:		dc.b	'; ƒfƒBƒXƒN‚ª–”t‚Å‚·',0
+msg_nodir:		dc.b	': ã“ã®ã‚ˆã†ãªãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã¯ã‚ã‚Šã¾ã›ã‚“',0
+msg_bad_name:		dc.b	'; åå‰ãŒç„¡åŠ¹ã§ã™',0
+msg_bad_drive:		dc.b	'; ãƒ‰ãƒ©ã‚¤ãƒ–ã®æŒ‡å®šãŒç„¡åŠ¹ã§ã™',0
+msg_write_disabled:	dc.b	'; æ›¸ãè¾¼ã¿ãŒè¨±å¯ã•ã‚Œã¦ã„ã¾ã›ã‚“',0
+msg_directory_exists:	dc.b	'; ã™ã§ã«å­˜åœ¨ã—ã¦ã„ã¾ã™',0
+msg_directory_full:	dc.b	'; ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒæº€æ¯ã§ã™',0
+msg_disk_full:		dc.b	'; ãƒ‡ã‚£ã‚¹ã‚¯ãŒæº€æ¯ã§ã™',0
 
 msg_myname:		dc.b	'mkdir: ',0
-msg_no_memory:		dc.b	'ƒƒ‚ƒŠ‚ª‘«‚è‚Ü‚¹‚ñ',CR,LF,0
-msg_directory:		dc.b	'ƒfƒBƒŒƒNƒgƒŠg',0
-msg_failed:		dc.b	'h‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½',0
-msg_too_long_pathname:	dc.b	': ƒpƒX–¼‚ª’·‰ß‚¬‚Ü‚·',CR,LF,0
-msg_illegal_option:	dc.b	'•s³‚ÈƒIƒvƒVƒ‡ƒ“ -- ',0
-msg_too_few_args:	dc.b	'ˆø”‚ª‘«‚è‚Ü‚¹‚ñ',0
-msg_usage:		dc.b	CR,LF,'g—p–@:  mkdir [-p] [--] <ƒpƒX–¼> ...'
+msg_no_memory:		dc.b	'ãƒ¡ãƒ¢ãƒªãŒè¶³ã‚Šã¾ã›ã‚“',CR,LF,0
+msg_directory:		dc.b	'ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªâ€œ',0
+msg_failed:		dc.b	'â€ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ',0
+msg_too_long_pathname:	dc.b	': ãƒ‘ã‚¹åãŒé•·éãã¾ã™',CR,LF,0
+msg_illegal_option:	dc.b	'ä¸æ­£ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ -- ',0
+msg_too_few_args:	dc.b	'å¼•æ•°ãŒè¶³ã‚Šã¾ã›ã‚“',0
+msg_usage:		dc.b	CR,LF,'ä½¿ç”¨æ³•:  mkdir [-p] [--] <ãƒ‘ã‚¹å> ...'
 msg_newline:		dc.b	CR,LF,0
 dos_wildcard_all:	dc.b	'*.*',0
 *****************************************************************
